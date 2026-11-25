@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>ARI // NOCTURNE</title>
+  
+  <link rel="preconnect" href="https://googleapis.com">
+  <link rel="preconnect" href="https://gstatic.com" crossorigin>
+  <link href="https://googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Plus+Jakarta+Sans:wght@300;400;600&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="entry-gate">
+    <div class="gate-sigil">† ENTER †</div>
+    <div class="gate-sub">Touch anywhere to awaken</div>
+  </div>
+
+  <audio id="bg-music" src="arianarak.mp3" loop preload="auto"></audio>
+
+  <main class="container">
+    <section class="glass-card">
+      <div class="banner-wrapper">
+        <img id="ui-banner" class="banner-img" src="ari014.gif" alt="Banner">
+        <div class="banner-overlay"></div>
+      </div>
+      <div class="profile-body">
+        <div class="avatar-ring">
+          <img id="ui-avatar" class="avatar-img" src="ari.com.jpg" alt="Profile">
+        </div>
+        <h1 id="ui-name" class="display-name">ARI</h1>
+        <span id="ui-handle" class="handle-tag">@ari.nocturne</span>
+        <p id="ui-bio" class="bio-quote">"Even the darkest night bleeds into silence; some ghosts never truly leave."</p>
+      </div>
+    </section>
+
+    <div class="audio-bar" id="audio-bar">
+      <div class="track-info">
+        <div class="equalizer">
+          <div class="bar"></div>
+          <div class="bar"></div>
+          <div class="bar"></div>
+        </div>
+        <span id="ui-track" class="track-title">arianarak.mp3</span>
+      </div>
+      <button id="audio-toggle" class="audio-btn">PAUSE</button>
+    </div>
+
+    <section id="ui-links" class="links-stack"></section>
+
+    <section class="glass-card section-box">
+      <div class="section-header">
+        <h2 class="section-title">ECHOES & NOTES</h2>
+        <span id="review-count" style="font-size:0.7rem; color:var(--text-muted);">0</span>
+      </div>
+      <form id="review-form" class="review-form">
+        <input type="text" id="rev-author" class="gothic-input" placeholder="Alias (optional)" maxlength="24">
+        <input type="text" id="rev-content" class="gothic-input" placeholder="Leave a trace in the dark..." maxlength="140" required>
+        <button type="submit" class="submit-btn">INSCRIBE</button>
+      </form>
+      <div id="ui-reviews" class="review-list"></div>
+    </section>
+
+    <footer class="footer-sigil" id="admin-trigger" title="Sanctum Access">
+      † ⸸ †
+    </footer>
+  </main>
+
+  <div id="auth-modal" class="modal-backdrop">
+    <div class="admin-panel" style="max-width: 320px; text-align: center;">
+      <div class="admin-header">
+        <span class="admin-title">SANCTUM GATE</span>
+        <button class="close-btn" onclick="closeModals()">×</button>
+      </div>
+      <p style="font-size: 0.72rem; color: var(--text-muted); margin-bottom: 14px; letter-spacing: 1px;">ENTER PASSCODE TO UNLOCK</p>
+      <input type="password" id="pass-input" class="gothic-input" placeholder="••••••" style="text-align: center; letter-spacing: 6px; margin-bottom: 12px;">
+      <button class="submit-btn" style="width: 100%;" onclick="verifyPasscode()">UNLOCK</button>
+    </div>
+  </div>
+
+  <div id="admin-modal" class="modal-backdrop">
+    <div class="admin-panel">
+      <div class="admin-header">
+        <span class="admin-title">SANCTUM CONTROL</span>
+        <button class="close-btn" onclick="closeModals()">×</button>
+      </div>
+
+      <div class="admin-group">
+        <label class="admin-label">Identity & Media Paths</label>
+        <input type="text" id="cfg-name" class="gothic-input" placeholder="Display Name" style="margin-bottom:6px;">
+        <input type="text" id="cfg-handle" class="gothic-input" placeholder="Handle / Subtitle" style="margin-bottom:6px;">
+        <input type="text" id="cfg-bio" class="gothic-input" placeholder="Melancholy Quote / Bio" style="margin-bottom:6px;">
+        <div class="admin-row">
+          <input type="text" id="cfg-avatar" class="gothic-input" placeholder="Avatar file (ari.com.jpg)">
+          <input type="text" id="cfg-banner" class="gothic-input" placeholder="Banner file (ari014.gif)">
+        </div>
+        <input type="text" id="cfg-music" class="gothic-input" placeholder="Music file (arianarak.mp3)">
+      </div>
+
+      <div class="admin-group">
+        <label class="admin-label">Aesthetic & Font Architecture</label>
+        <div class="admin-row">
+          <select id="cfg-theme" class="gothic-input">
+            <option value="default">Nocturne Lilac (Default)</option>
+            <option value="obsidian">Sharp Obsidian (Minimal)</option>
+            <option value="crimson">Dried Blood (Dark Rose)</option>
+            <option value="ether">Cold Ether (Midnight Blue)</option>
+          </select>
+          <select id="cfg-font" class="gothic-input">
+            <option value="'Cinzel Decorative', serif">Cinzel Ritual</option>
+            <option value="'UnifrakturMaguntia', cursive">Old Blackletter</option>
+            <option value="'Cormorant Garamond', serif">Tragic Serif</option>
+          </select>
+        </div>
+        <div class="admin-row" style="align-items:center;">
+          <span style="font-size:0.72rem; color:var(--text-muted);">Accent Glow:</span>
+          <input type="color" id="cfg-accent" value="#9e8fb2" style="background:none; border:none; height:30px; cursor:pointer;">
+        </div>
+        <button class="submit-btn" style="width:100%; margin-top:4px;" onclick="saveGeneralConfig()">APPLY CHANGES</button>
+      </div>
+
+      <div class="admin-group">
+        <label class="admin-label">Manage Links</label>
+        <div class="admin-row">
+          <input type="text" id="new-link-label" class="gothic-input" placeholder="Label (e.g. INSTAGRAM)">
+          <input type="text" id="new-link-url" class="gothic-input" placeholder="URL (https://...)">
+        </div>
+        <button class="submit-btn" style="width:100%; margin-bottom:10px;" onclick="addLink()">+ ADD LINK</button>
+        <div id="admin-links-list" style="display:flex; flex-direction:column; gap:6px;"></div>
+      </div>
+
+      <div class="admin-group">
+        <label class="admin-label">Moderate Echoes (Delete)</label>
+        <div id="admin-reviews-list" style="display:flex; flex-direction:column; gap:6px; max-height:140px; overflow-y:auto;"></div>
+      </div>
+
+      <div class="admin-group" style="border:none; padding-bottom:0;">
+        <label class="admin-label">Change Admin Passcode</label>
+        <div class="admin-row">
+          <input type="text" id="new-passcode" class="gothic-input" placeholder="New Passcode">
+          <button class="submit-btn" onclick="updatePasscode()">UPDATE</button>
+        </div>
+        <button class="del-btn" style="width:100%; margin-top:10px; padding:8px;" onclick="resetAllData()">FACTORY RESET ALL DATA</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
